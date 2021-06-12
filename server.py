@@ -1,14 +1,11 @@
 #!/usr/bin/env python
 # encoding: utf-8
 import json
-#https://jdhao.github.io/2020/06/13/flask_serving_via_wsgi_server/
 import os
 from flask import Flask, request, jsonify
 
 values_path = 'storage/values/'
 app = Flask('key_vault')
-
-
 
 @app.route('/')
 def index():
@@ -41,4 +38,4 @@ def rm_key(key):
         return jsonify(status='could not store key')
 
 if __name__ == "__main__":
-    app.run(port=5001)
+    app.run(port=8081)
