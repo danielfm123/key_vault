@@ -10,6 +10,3 @@ def set_key(key,value):
     params = {'pass':password, 'key':key, 'value': value}
     resp = requests.put('http://127.0.0.1:5001/key',params=params)
     return resp.text
-
-set_key('asdf','gato')
-get_key('asdf')
