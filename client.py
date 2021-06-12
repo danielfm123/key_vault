@@ -6,6 +6,8 @@ class Key:
     def __init__(self,key = None):
         if key is None:
             key = Fernet.generate_key()
+            print('Store the new key:')
+            print(key.decode('UTF-8'))
         if type(key).__name__ != 'bytes':
             self.key = bytes(key,'UTF-8')
         else:

@@ -1,5 +1,6 @@
 from client import *
 
+tmp = Key()
 password = 'Z_eIKSZvC9oCjf-ocg27Q070OAzCiw6LH7892okyzsY='
 server = 'http://127.0.0.1:8081'
 
