@@ -2,8 +2,6 @@
 # encoding: utf-8
 import json
 #https://jdhao.github.io/2020/06/13/flask_serving_via_wsgi_server/
-from flask import Flask
-from flask import request
 from cryptography.fernet import Fernet
 import os
 
