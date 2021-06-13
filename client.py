@@ -1,6 +1,7 @@
 from cryptography.fernet import Fernet
 import requests
 import json
+from urllib.parse import quote_plus
 
 class Key:
     def __init__(self,key = None):
@@ -25,25 +26,29 @@ class Key:
         return self.cipher_suite.decrypt(text).decode('UTF-8')
 
 class KeyVaultClient:
-    def __init__(self, server, password):
-        self.encrypter = Key(password)
+    def __init__(self, server, password=None):
+        if password is None:
+            self.encrypted = False
+        else:
+            self.encrypter = Key(password)
+            self.encrypted = True
         self.server = server
-        self.keyUrl = self.server + '/key'
 
-    def get_value(self,key):
-        url = '/'.join([self.keyUrl, key])
+    def get_value(self,group,key):
+        url = '/'.join([self.server, quote_plus(group), quote_plus(key)])
         resp = json.loads(requests.get(url).text)
         if resp['status'] == 0:
-            return self.encrypter.decrypt(resp['value'])
+            return self.encrypter.decrypt(resp['value']) if self.encrypted else resp['value']
         else:
             print('Error '+key+' not found.')
 
-    def set_value(self,key, value):
-        url = '/'.join([self.keyUrl, key, self.encrypter.encrypt(value)])
+    def set_value(self,group,key, value):
+        value = self.encrypter.encrypt(value) if self.encrypted else quote_plus(value)
+        url = '/'.join([self.server, quote_plus(group), quote_plus(key), value])
         resp = json.loads(requests.put(url).text)
         return resp
 
-    def rm_value(self,key):
-        url = '/'.join([self.keyUrl, key])
+    def rm_value(self,group,key):
+        url = '/'.join([self.server, quote_plus(group), quote_plus(key)])
         resp = json.loads(requests.delete(url).text)
         return resp
