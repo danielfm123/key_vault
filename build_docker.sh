@@ -1,1 +1,1 @@
-sudo docker build . -t kv
+sudo docker build . -t key_vault

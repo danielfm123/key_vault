@@ -1,1 +1,1 @@
-sudo docker run -p 8081:8081 kv
+sudo /usr/bin/docker run -p 8081:8081 -v /opt/key_vault_storage:/opt/app/storage key_vault
