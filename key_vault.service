@@ -1,0 +1,25 @@
+[Unit]
+Description=key_vault
+Documentation=https://docs.docker.com
+BindsTo=containerd.service
+After=network-online.target firewalld.service containerd.service
+Wants=network-online.target
+Requires=docker.socket
+ 
+[Service]
+Type=simple
+User=root
+Group=root
+WorkingDirectory=/opt/lib_anasac
+ExecStop=/usr/bin/docker kill key_vault_server
+ExecStop=/usr/bin/docker rm key_vault_server
+ExecStartPre=-/usr/bin/docker kill key_vault_serve
+ExecStartPre=-/usr/bin/docker rm key_vault_server
+ExecStart=/usr/bin/docker run -p 127.0.0.1:8081:8081 -v /opt/key_vault_storage:/opt/app/storage --name key_vault_server key_vault
+KillMode=process
+StandardOutput=journal
+StandardError=journal
+SuccessExitStatus=143
+
+[Install]
+WantedBy=multi-user.target
